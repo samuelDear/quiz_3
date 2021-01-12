@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import NavBar from '../components/NavBar';
 import './styles/home.css'
 import { useHistory } from "react-router-dom";
+import Loading from '../components/Loading';
 
 const Home = ({ location }) => {
 
@@ -10,6 +11,7 @@ const Home = ({ location }) => {
     const [books, setBooks] = useState([]);
     const [booksView, setBooksView] = useState([]);
     const [errorMsg, setErrorMsg] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const [optionFilter, setOptionFilter] = useState('');
     const [searchTxt, setSearchTxt] = useState('');
@@ -69,13 +71,13 @@ const Home = ({ location }) => {
 
     const setMistake = msg =>{
         setErrorMsg(msg);
+        setLoading(false);
         setTimeout(() => {
           setErrorMsg('');
         }, 3000);
     }
 
     const callBooks = () => {
-        console.log('load');
         var whatEmail = 'contacto@tuten.cl';
 
         // Armamos la cabecera
@@ -88,6 +90,7 @@ const Home = ({ location }) => {
             'Accept': 'application/json'
         });
 
+        setLoading(true);
         //Llamamos a la api
         fetch(`https://dev.tuten.cl:443/TutenREST/rest/user/${encodeURIComponent(whatEmail)}/bookings?current=true`,{
             method: 'GET',
@@ -97,6 +100,7 @@ const Home = ({ location }) => {
             // Validamos el status
             switch(response.status){
                 case 200:
+                    setLoading(false);
                     // SI todo salio bien, guardamos la data
                     let data = response.json();
                     data.then(data => {
@@ -125,6 +129,7 @@ const Home = ({ location }) => {
 
     return (
         <Fragment>
+            { loading ? <Loading /> : null}
             <NavBar userName={userName}/>
             <main className="homeBox">
                 <h3 className="subtitle">Welcome!</h3>

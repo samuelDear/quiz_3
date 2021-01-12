@@ -4,6 +4,7 @@ import logo from '../images/logo.svg';
 import showEye from '../images/showEye.svg';
 import noShowEye from '../images/noShowEye.svg';
 import { useHistory } from "react-router-dom";
+import Loading from '../components/Loading';
 
 const Login = () => {
 
@@ -11,6 +12,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [showPwd, setShowPwd] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -20,6 +22,7 @@ const Login = () => {
 
     const setMistake = msg =>{
         setErrorMsg(msg);
+        setLoading(false);
         setTimeout(() => {
           setErrorMsg('');
         }, 3000);
@@ -52,6 +55,7 @@ const Login = () => {
             'Accept': 'application/json'
         });
 
+        setLoading(true);
         //Llamamos a la api
         fetch(`https://dev.tuten.cl/TutenREST/rest/user/${encodeURIComponent(email)}`,{
             method: 'PUT',
@@ -65,6 +69,7 @@ const Login = () => {
                     let data = response.json();
                     data.then(data => {
                         localStorage.setItem('tokenId',data.sessionTokenBck);
+                        setLoading(false);
                         history.push({
                             pathname: "/home",
                             params: {
@@ -87,6 +92,7 @@ const Login = () => {
 
     return (
         <main className="mainBox">
+            { loading ? <Loading /> : null}
             <div className="loginBox">
                 <img src={logo} className="libraryIc" title="Tuten Library" alt="Tuten Library Icon"/>
                 <h1 className="title">Tuten Library</h1>
