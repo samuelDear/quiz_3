@@ -1,16 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './styles/login.css'
 import logo from '../images/logo.svg';
 import showEye from '../images/showEye.svg';
 import noShowEye from '../images/noShowEye.svg';
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
 
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [showPwd, setShowPwd] = useState(true);
 
     const [errorMsg, setErrorMsg] = useState('');
+
+    useEffect(() => {
+        localStorage.removeItem('tokenId');
+    }, [])
 
     const setMistake = msg =>{
         setErrorMsg(msg);
@@ -58,7 +64,13 @@ const Login = () => {
                     // SI todo salio bien, guardamos el token
                     let data = response.json();
                     data.then(data => {
+                        localStorage.setItem('tokenId',data.sessionTokenBck);
                         console.log(data);
+                        history.push({
+                            pathname: "/home",
+                            params: {
+                                username: data.email,
+                            }});
                     })
                     break;
                 case 400:
