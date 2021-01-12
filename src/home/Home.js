@@ -8,19 +8,30 @@ const Home = ({ location }) => {
     const history = useHistory();
     const [userName, setUserName] = useState('');
     const [books, setBooks] = useState([]);
+    const [booksView, setBooksView] = useState([]);
     const [errorMsg, setErrorMsg] = useState('');
+
+    const [optionFilter, setOptionFilter] = useState('');
+    const [searchTxt, setSearchTxt] = useState('');
 
     useEffect(() => {
 
         if(location.params !== undefined && location.params !== null){
             setUserName(location.params.username);
+            callBooks();
         }else{
             history.push("/");
         }
-
-        callBooks();
         
     }, [])
+
+    useEffect(() => {
+        filterItems();
+    }, [optionFilter]);
+
+    useEffect(() => {
+        filterItems();
+    }, [searchTxt]);
 
     const setMistake = msg =>{
         setErrorMsg(msg);
@@ -55,8 +66,8 @@ const Home = ({ location }) => {
                     // SI todo salio bien, guardamos el token
                     let data = response.json();
                     data.then(data => {
-                        console.log(data);
                         setBooks(data);
+                        setBooksView(data);
                     })
                     break;
                 case 400:
@@ -72,12 +83,45 @@ const Home = ({ location }) => {
         });
     }
 
-    const transformDate = (time) => {
+    const transformDate = time => {
         let date = new Date(time);
-
-        console.log(date);
-
         return `${date.getDate()}/${(date.getMonth() + 1)}/${date.getFullYear()}`;
+    }
+
+    const filterItems = () => {
+        var booksTmp;
+
+        switch(optionFilter){
+            case "like":
+                booksTmp = books.filter(data => (
+                    data.bookingId.toString().indexOf(searchTxt) > -1 || 
+                    data.bookingPrice.toString().indexOf(searchTxt) > -1 ? data.bookingId : null) );
+                break;
+            case ">":
+                booksTmp = books.filter(data => (
+                    data.bookingId < searchTxt || 
+                    data.bookingPrice > searchTxt ? data.bookingId : null) );
+                break;
+            case "<":
+                booksTmp = books.filter(data => (
+                    data.bookingId < searchTxt || 
+                    data.bookingPrice < searchTxt ? data.bookingId : null) );
+                break;
+            case ">=":
+                booksTmp = books.filter(data => (
+                    data.bookingId >= searchTxt || 
+                    data.bookingPrice >= searchTxt ? data.bookingId : null) );
+                break;
+            case "<=":
+                booksTmp = books.filter(data => (
+                    data.bookingId <= searchTxt || 
+                    data.bookingPrice <= searchTxt ? data.bookingId : null) );
+                break;
+            default:
+                booksTmp = books;
+        }
+        
+        setBooksView(booksTmp);
     }
 
     return (
@@ -87,6 +131,27 @@ const Home = ({ location }) => {
                 <h3 className="subtitle">Welcome!</h3>
 
                 <div className="grid">
+
+                    <div className="searchBox">
+                        <input type="text" 
+                            value={searchTxt}
+                            onChange={e => setSearchTxt(e.target.value)}
+                            placeholder="Buscar..."
+                            className="searchInput"/>
+
+                        <select className="optionFilter"
+                            onChange={async e => setOptionFilter(e.target.value)}
+                            value={optionFilter}>
+                            <option value="">Seleccione</option>
+                            <option value="like">Like</option>
+                            <option value="<">&lt;</option>
+                            <option value=">">&gt;</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                        </select>
+
+                    </div>
+
                     <div className="headerGrid">
                         <div className="headerItem">
                             <p>BookingId</p>
@@ -104,8 +169,8 @@ const Home = ({ location }) => {
                             <p>Precio</p>
                         </div>
                     </div>
-                    {books.length > 0 ? books.map((data, index) => (
-                        <div className={index % 2 == 0 ? 'divRow' : 'divRow imparRow'} id={index}>
+                    {booksView.length > 0 ? booksView.map((data, index) => (
+                        <div key={index} className={index % 2 === 0 ? 'divRow' : 'divRow imparRow'} id={index}>
                             <div className="rowItem">
                                 {data.bookingId}
                             </div>

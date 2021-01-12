@@ -48,3 +48,15 @@
 .imparRow{
     background-color: #EEE;
 }
+
+.searchBox {
+    margin: 10px 0px;
+}
+
+.searchInput, .optionFilter {
+    padding: 0px 8px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1.5px solid #D5DCE5;
+    margin-right: 10px;
+}
