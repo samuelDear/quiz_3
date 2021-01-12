@@ -1,0 +1,92 @@
+.mainBox {
+    height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(#49ABED, #0267AB);
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginBox {
+    width: 50%;
+    padding: 20px;
+    background-color: #FFF;
+    border-radius: 27px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.libraryIc{
+    width: 50%;
+}
+
+.title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.formBox {
+    width: 85%;
+}
+
+.inputLabelCol {
+    margin: 12px;
+    display: flex;
+    flex-direction: column;   
+}
+
+label {
+    font-family: 'Open-sans';
+    font-size: 110%;
+    margin-bottom: 5px;
+    color: #454545;
+}
+
+.boxPwd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boxPwd, .inputGlobal {
+    padding: 0px 8px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1.5px solid #D5DCE5;
+}
+
+.boxPwd input {
+    height: 40px;
+    padding: 0px;
+    border-style: none;
+    width: 100%;
+}
+
+.boxPwd input:focus {
+    outline: none;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+}
+
+.buttonForm {
+    display:flex;
+    justify-content:center;
+}
+
+.btnLogin {
+    margin-top: 20px;
+    background: #49ABED;
+    border-radius: 10px;
+    color: #FFF;
+    padding: 10px 15px;
+    border-style: none;
+}
+
+.eyeStyle {
+    width: 25px;
+    height: 25px;
+}
