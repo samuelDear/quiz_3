@@ -10,7 +10,6 @@ import Home from './home/Home';
 import Layout from './components/Layout';
 
 function App( {history} ) {
-  console.log(history);
   return (
     <BrowserRouter>
       <Layout>

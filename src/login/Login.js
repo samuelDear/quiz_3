@@ -65,7 +65,6 @@ const Login = () => {
                     let data = response.json();
                     data.then(data => {
                         localStorage.setItem('tokenId',data.sessionTokenBck);
-                        console.log(data);
                         history.push({
                             pathname: "/home",
                             params: {

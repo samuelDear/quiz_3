@@ -22,16 +22,50 @@ const Home = ({ location }) => {
         }else{
             history.push("/");
         }
-        
-    }, [])
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); 
 
     useEffect(() => {
-        filterItems();
-    }, [optionFilter]);
+        /*Funcion para filtrar los books */
+        const filterItems = () => {
+            var booksTmp;
 
-    useEffect(() => {
+            switch(optionFilter){
+                case "like":
+                    booksTmp = books.filter(data => (
+                        data.bookingId.toString().indexOf(searchTxt) > -1 || 
+                        data.bookingPrice.toString().indexOf(searchTxt) > -1 ? data.bookingId : null) );
+                    break;
+                case ">":
+                    booksTmp = books.filter(data => (
+                        data.bookingId < searchTxt || 
+                        data.bookingPrice > searchTxt ? data.bookingId : null) );
+                    break;
+                case "<":
+                    booksTmp = books.filter(data => (
+                        data.bookingId < searchTxt || 
+                        data.bookingPrice < searchTxt ? data.bookingId : null) );
+                    break;
+                case ">=":
+                    booksTmp = books.filter(data => (
+                        data.bookingId >= searchTxt || 
+                        data.bookingPrice >= searchTxt ? data.bookingId : null) );
+                    break;
+                case "<=":
+                    booksTmp = books.filter(data => (
+                        data.bookingId <= searchTxt || 
+                        data.bookingPrice <= searchTxt ? data.bookingId : null) );
+                    break;
+                default:
+                    booksTmp = books;
+            }
+
+            setBooksView(booksTmp);
+        }
+
         filterItems();
-    }, [searchTxt]);
+    }, [searchTxt,optionFilter,books]);
 
     const setMistake = msg =>{
         setErrorMsg(msg);
@@ -63,7 +97,7 @@ const Home = ({ location }) => {
             // Validamos el status
             switch(response.status){
                 case 200:
-                    // SI todo salio bien, guardamos el token
+                    // SI todo salio bien, guardamos la data
                     let data = response.json();
                     data.then(data => {
                         setBooks(data);
@@ -83,45 +117,10 @@ const Home = ({ location }) => {
         });
     }
 
+    /*Funcion para retornar una fecha visible para el usuario */
     const transformDate = time => {
         let date = new Date(time);
         return `${date.getDate()}/${(date.getMonth() + 1)}/${date.getFullYear()}`;
-    }
-
-    const filterItems = () => {
-        var booksTmp;
-
-        switch(optionFilter){
-            case "like":
-                booksTmp = books.filter(data => (
-                    data.bookingId.toString().indexOf(searchTxt) > -1 || 
-                    data.bookingPrice.toString().indexOf(searchTxt) > -1 ? data.bookingId : null) );
-                break;
-            case ">":
-                booksTmp = books.filter(data => (
-                    data.bookingId < searchTxt || 
-                    data.bookingPrice > searchTxt ? data.bookingId : null) );
-                break;
-            case "<":
-                booksTmp = books.filter(data => (
-                    data.bookingId < searchTxt || 
-                    data.bookingPrice < searchTxt ? data.bookingId : null) );
-                break;
-            case ">=":
-                booksTmp = books.filter(data => (
-                    data.bookingId >= searchTxt || 
-                    data.bookingPrice >= searchTxt ? data.bookingId : null) );
-                break;
-            case "<=":
-                booksTmp = books.filter(data => (
-                    data.bookingId <= searchTxt || 
-                    data.bookingPrice <= searchTxt ? data.bookingId : null) );
-                break;
-            default:
-                booksTmp = books;
-        }
-        
-        setBooksView(booksTmp);
     }
 
     return (
@@ -129,6 +128,10 @@ const Home = ({ location }) => {
             <NavBar userName={userName}/>
             <main className="homeBox">
                 <h3 className="subtitle">Welcome!</h3>
+
+                { errorMsg !== '' ? (
+                    <p className="errorForm">{ errorMsg }</p>
+                ) : null}
 
                 <div className="grid">
 

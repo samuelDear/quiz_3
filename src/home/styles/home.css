@@ -60,3 +60,11 @@
     border: 1.5px solid #D5DCE5;
     margin-right: 10px;
 }
+
+.errorForm {
+    text-align: center;
+    color: #F00;
+    font-family: 'Open-sans';
+    font-size: 90%;
+    margin: 8px 0px;
+}
