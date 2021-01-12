@@ -90,3 +90,11 @@ label {
     width: 25px;
     height: 25px;
 }
+
+.errorForm {
+    text-align: center;
+    color: #F00;
+    font-family: 'Open-sans';
+    font-size: 90%;
+    margin: 8px 0px;
+}

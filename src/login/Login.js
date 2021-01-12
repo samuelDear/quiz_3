@@ -8,8 +8,16 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
-    const [showPwd, setShowPwd] = useState(false);
+    const [showPwd, setShowPwd] = useState(true);
 
+    const [errorMsg, setErrorMsg] = useState('');
+
+    const setMistake = msg =>{
+        setErrorMsg(msg);
+        setTimeout(() => {
+          setErrorMsg('');
+        }, 3000);
+    }
 
     const handleShow = () => {
         setShowPwd(previousState => !previousState)
@@ -22,7 +30,48 @@ const Login = () => {
     }
 
     const handleSubmit = (e) => {
-        
+
+        //Validamos que los campos no esten vacios
+        if(email === '' || pwd === ''){
+            setMistake('Campos vacíos');
+            return null;
+        }
+
+        // Armamos la cabecera
+        const headerItem = new Headers({ 
+            'Content-Type': 'application/json',
+            'email': email,
+            'password': pwd,
+            'app': 'APP_BCK',
+            'Accept': 'application/json'
+        });
+
+        //Llamamos a la api
+        fetch(`https://dev.tuten.cl/TutenREST/rest/user/${encodeURIComponent(email)}`,{
+            method: 'PUT',
+            headers: headerItem,
+        }).then(response => {
+
+            // Validamos el status
+            switch(response.status){
+                case 200:
+                    // SI todo salio bien, guardamos el token
+                    let data = response.json();
+                    data.then(data => {
+                        console.log(data);
+                    })
+                    break;
+                case 400:
+                    setMistake('Invalid something');
+                    break;
+                default:
+                    setMistake('Error interno');
+                    break;
+            }
+            
+        }).catch(e => {
+            setMistake('Error interno');
+        });
     }
 
     return (
@@ -32,6 +81,11 @@ const Login = () => {
                 <h1 className="title">Tuten Library</h1>
 
                 <form className="formBox">
+
+                    { errorMsg !== '' ? (
+                        <p className="errorForm">{ errorMsg }</p>
+                    ) : null}
+
                     <div className="inputLabelCol">
                         <label htmlFor="email">Correo electrónico:</label>
                         <input type="email" 
@@ -51,14 +105,20 @@ const Login = () => {
                                 placeholder="Contraseña..."
                                 id="pwd"
                                 value={pwd}
-                                onChange={e => setPwd(e.target.pwd)}/>
+                                onChange={e => setPwd(e.target.value)}/>
                             <img src={( showPwd ? noShowEye : showEye)} 
                                 className="eyeStyle"
+                                alt="Eye"
+                                title="Eye"
                                 onClick={handleShow}/>
                         </div>
                     </div>
                     <div className="buttonForm">
-                        <button type="button" className="btnLogin">Iniciar sesión</button>
+                        <button type="button" 
+                            className="btnLogin"
+                            onClick={handleSubmit}>
+                            Iniciar sesión
+                        </button>
                     </div>
                     
                 </form>
