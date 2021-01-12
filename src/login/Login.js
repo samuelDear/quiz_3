@@ -69,12 +69,9 @@ const Login = () => {
                     let data = response.json();
                     data.then(data => {
                         localStorage.setItem('tokenId',data.sessionTokenBck);
+                        localStorage.setItem('userName', data.email)
                         setLoading(false);
-                        history.push({
-                            pathname: "/home",
-                            params: {
-                                username: data.email,
-                            }});
+                        history.push("/home");
                     })
                     break;
                 case 400:

@@ -18,8 +18,8 @@ const Home = ({ location }) => {
 
     useEffect(() => {
 
-        if(location.params !== undefined && location.params !== null){
-            setUserName(location.params.username);
+        if(localStorage.getItem('tokenId') !== undefined && localStorage.getItem('tokenId') !== null && localStorage.getItem('tokenId') !== ""){
+            setUserName(localStorage.getItem('userName'));
             callBooks();
         }else{
             history.push("/");
@@ -83,7 +83,7 @@ const Home = ({ location }) => {
         // Armamos la cabecera
         const headerItem = new Headers({ 
             'Content-Type': 'application/json',
-            'adminemail': location.params.username,
+            'adminemail': localStorage.getItem('userName'),
             'token': localStorage.getItem('tokenId'),
             'email': whatEmail,
             'app': 'APP_BCK',
