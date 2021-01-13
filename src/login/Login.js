@@ -49,7 +49,7 @@ const Login = () => {
         // Armamos la cabecera
         const headerItem = new Headers({ 
             'Content-Type': 'application/json',
-            'email': email,
+            'email': email.toLowerCase(),
             'password': pwd,
             'app': 'APP_BCK',
             'Accept': 'application/json'
@@ -57,7 +57,7 @@ const Login = () => {
 
         setLoading(true);
         //Llamamos a la api
-        fetch(`https://dev.tuten.cl/TutenREST/rest/user/${encodeURIComponent(email)}`,{
+        fetch(`https://dev.tuten.cl/TutenREST/rest/user/${encodeURIComponent(email.toLowerCase())}`,{
             method: 'PUT',
             headers: headerItem,
         }).then(response => {
@@ -69,7 +69,7 @@ const Login = () => {
                     let data = response.json();
                     data.then(data => {
                         localStorage.setItem('tokenId',data.sessionTokenBck);
-                        localStorage.setItem('userName', data.email)
+                        localStorage.setItem('userName', data.email.toLowerCase())
                         setLoading(false);
                         history.push("/home");
                     })
