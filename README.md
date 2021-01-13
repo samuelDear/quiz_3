@@ -1,7 +1,7 @@
 # Componentes utilizados
 
--react-dom: 17.0.1
--react-router-dom: 5.2.0
+- react-dom: 17.0.1
+- react-router-dom: 5.2.0
 
 # Pasos para replicar prueba
 
