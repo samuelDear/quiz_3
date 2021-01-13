@@ -1,3 +1,18 @@
+# Componentes utilizados
+
+-react-dom: 17.0.1
+-react-router-dom: 5.2.0
+
+# Pasos para replicar prueba
+
+- Paso 1: Se agrego react-router-dom para configurar la navegación dentro de la aplicación
+- Paso 2: Maqueteo del Login
+- Paso 3: Implementacion de validacion y servicio de user/login
+- Paso 4: Maqueteo del Home
+- Paso 5: Implementacion de servicio user/booking
+- Paso 6: Implementacion de filtro para busqueda dentro del home
+- Paso 7: Agrego de manejo de tokenId por cache, logout y agrego de pantalla de carga
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
